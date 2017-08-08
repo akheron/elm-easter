@@ -40,7 +40,7 @@ easter method year =
     -- p - Number of days from March 21 to Sunday on or before PFM
     --     (-6 to 28 Julian & Western, to 56 for Orthodox)
     -- e - Extra days to add for Orthodox method (converting Julian
-    --     date to Gregorian date)
+    --     date to Gregorian date) - 10
     let
         y =
             year
@@ -48,35 +48,30 @@ easter method year =
         g =
             y % 19
 
+        pj y =
+            let
+                i =
+                    (19 * g + 15) % 30
+
+                j =
+                    (y + y // 4 + i) % 7
+            in
+                i - j
+
         p =
             case method of
                 Julian ->
-                    let
-                        i =
-                            (19 * g + 15) % 30
-
-                        j =
-                            (y + y // 4 + i) % 7
-                    in
-                        i - j
+                    pj y
 
                 Orthodox ->
                     let
-                        i =
-                            (19 * g + 15) % 30
-
-                        j =
-                            (y + y // 4 + i) % 7
-
                         e =
-                            10
-                                + (if y <= 1600 then
-                                    0
-                                   else
-                                    y // 100 - 16 - (y // 100 - 16) // 4
-                                  )
+                            if y <= 1600 then
+                                0
+                            else
+                                y // 100 - 16 - (y // 100 - 16) // 4
                     in
-                        i - j + e
+                        pj y + 10 + e
 
                 Western ->
                     let
