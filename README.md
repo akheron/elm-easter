@@ -9,7 +9,7 @@ any given year, using Western, Orthodox or Julian algorithms.
     -- Easter in year 2017, according to Western (most common) algorithm
     easter Western 2017  -- 2017-04-16
 
-    -- Easter in year 1415, according to the Orthodox algorithm
+    -- Easter in year 1416, according to the Orthodox algorithm
     easter Orthodox 1416  -- 1416-04-29
 
 See
