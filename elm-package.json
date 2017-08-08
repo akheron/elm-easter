@@ -1,12 +1,14 @@
 {
-    "version": "1.0.0",
+    "version": "1.0.1",
     "summary": "Compute the date of Easter for any given year",
     "repository": "https://github.com/akheron/elm-easter.git",
     "license": "MIT",
     "source-directories": [
         "src"
     ],
-    "exposed-modules": ["Easter"],
+    "exposed-modules": [
+        "Easter"
+    ],
     "dependencies": {
         "elm-lang/core": "5.1.1 <= v < 6.0.0",
         "elm-lang/html": "2.0.0 <= v < 3.0.0",
