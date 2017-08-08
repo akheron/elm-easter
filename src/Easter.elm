@@ -1,4 +1,7 @@
 -- Adapted from https://github.com/dateutil/dateutil/blob/bf71c95d73abe6d0c732116323802b41baf72b38/dateutil/easter.py
+--
+-- See http://www.tondering.dk/claus/cal/easter.php for info about the
+-- algorithms.
 
 
 module Easter exposing (EasterMethod(Julian, Orthodox, Western), easter)
