@@ -1,17 +1,27 @@
 # Generate a test suite, using python-dateutil as the reference Easter
 # computing implementation.
 
-from dateutil.easter import easter, EASTER_JULIAN, EASTER_ORTHODOX, EASTER_WESTERN
-
+from dateutil.easter import (EASTER_JULIAN, EASTER_ORTHODOX, EASTER_WESTERN,
+                             easter)
 
 elm_month_names = [
-    "Jan", "Feb", "Mar", "Apr", "May", "Jun",
-    "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec",
 ]
 
 
 def elm_date(d):
-    return "Date.fromCalendarDate %d %s %d" % (
+    return "{ year = %d, month = %s, day = %d }" % (
         d.year,
         elm_month_names[d.month - 1],
         d.day,
@@ -22,25 +32,22 @@ def elm_date(d):
 methods = [
     (EASTER_JULIAN, "julian"),
     (EASTER_ORTHODOX, "orthodox"),
-    (EASTER_WESTERN, "western")
+    (EASTER_WESTERN, "western"),
 ]
 
 # Test against some arbitrary year ranges
-year_ranges = [
-    (1200, 1300),
-    (1700, 1850),
-    (1920, 2100),
-]
+year_ranges = [(1200, 1300), (1700, 1850), (1920, 2100)]
 
-print('''\
+print(
+    """\
 module Tests exposing (..)
 
 import Expect exposing (Expectation)
 import Fuzz exposing (Fuzzer, list, int, string)
+import String
 import Test exposing (..)
-import Date exposing (Date, Month(..))
-import Date.Extra as Date
-import Easter exposing (EasterMethod(..))
+import Time exposing (Month(..))
+import Easter exposing (Date, EasterMethod(..))
 
 
 all : Test
@@ -60,26 +67,23 @@ suite methodName method easters =
 
 genTest : EasterMethod -> Date -> Test
 genTest method date =
-    let
-        year =
-            Date.year date
-    in
-        test (toString year) <|
-            \() -> (Expect.equal (Easter.easter method year) date)
+    test (String.fromInt date.year) <|
+        \\() -> (Expect.equal (Easter.easter method date.year) date)
 
-''')
+"""
+)
 
 for method, method_name in methods:
     first = True
-    print('%sEasters =' % method_name)
-    print('    [ ', end='')
+    print("%sEasters =" % method_name)
+    print("    [ ", end="")
     for start_year, end_year in year_ranges:
         for year in range(start_year, end_year + 1):
             date = easter(year, method)
             if not first:
-                print('\n    , ', end='')
-            print(elm_date(date), end='')
+                print("\n    , ", end="")
+            print(elm_date(date), end="")
             first = False
-    print(' ]')
-    print('')
-    print('')
+    print(" ]")
+    print("")
+    print("")
